@@ -36,6 +36,10 @@ async function bootstrap() {
   const prismaRepository = new PrismaRepository(configService);
   await prismaRepository.onModuleInit();
 
+  const rawBodySaver = (req: Request, _res: Response, buf: Buffer) => {
+    (req as any).rawBody = buf.toString();
+  };
+
   app.use(
     cors({
       origin(requestOrigin, callback) {
@@ -52,7 +56,7 @@ async function bootstrap() {
       credentials: configService.get<Cors>('CORS').CREDENTIALS,
     }),
     urlencoded({ extended: true, limit: '136mb' }),
-    json({ limit: '136mb' }),
+    json({ limit: '136mb', verify: rawBodySaver }),
     compression(),
   );
 

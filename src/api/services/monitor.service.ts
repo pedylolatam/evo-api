@@ -234,6 +234,8 @@ export class WAMonitoringService {
           token: data.hash,
           clientName: clientName,
           businessId: data.businessId,
+          providerType: data.providerType || 'baileys',
+          status: 'disconnected',
         },
       });
     } catch (error) {
@@ -250,6 +252,11 @@ export class WAMonitoringService {
   }
 
   private async setInstance(instanceData: InstanceDto) {
+    if (!instanceData.integration) {
+      instanceData.integration =
+        instanceData.providerType === 'meta' ? Integration.WHATSAPP_BUSINESS : Integration.WHATSAPP_BAILEYS;
+    }
+
     const instance = channelController.init(instanceData, {
       configService: this.configService,
       eventEmitter: this.eventEmitter,

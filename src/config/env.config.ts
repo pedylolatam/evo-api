@@ -271,6 +271,14 @@ export type Dify = { ENABLED: boolean };
 export type N8n = { ENABLED: boolean };
 export type Evoai = { ENABLED: boolean };
 export type Flowise = { ENABLED: boolean };
+export type Meta = {
+  APP_ID: string;
+  APP_SECRET: string;
+  GRAPH_VERSION: string;
+  VERIFY_TOKEN: string;
+  REDIRECT_URI: string;
+  ENCRYPTION_KEY: string;
+};
 
 export type S3 = {
   ACCESS_KEY: string;
@@ -313,6 +321,7 @@ export interface Env {
   N8N: N8n;
   EVOAI: Evoai;
   FLOWISE: Flowise;
+  META: Meta;
   CACHE: CacheConf;
   S3?: S3;
   AUTHENTICATION: Auth;
@@ -629,6 +638,14 @@ export class ConfigService {
       },
       FLOWISE: {
         ENABLED: process.env?.FLOWISE_ENABLED === 'true',
+      },
+      META: {
+        APP_ID: process.env.META_APP_ID || '',
+        APP_SECRET: process.env.META_APP_SECRET || '',
+        GRAPH_VERSION: process.env.META_GRAPH_VERSION || 'v21.0',
+        VERIFY_TOKEN: process.env.META_VERIFY_TOKEN || '',
+        REDIRECT_URI: process.env.META_REDIRECT_URI || '',
+        ENCRYPTION_KEY: process.env.ENCRYPTION_KEY || '',
       },
       CACHE: {
         REDIS: {
