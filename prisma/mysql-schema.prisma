@@ -71,6 +71,16 @@ model Instance {
   number                  String?                  @db.VarChar(100)
   businessId              String?                  @db.VarChar(100)
   token                   String?                  @db.VarChar(255)
+  providerType            String                   @default("baileys") @db.VarChar(32)
+  wabaId                  String?                  @db.VarChar(255)
+  phoneNumberId           String?                  @db.VarChar(255)
+  phoneNumber             String?                  @unique @db.VarChar(50)
+  accessToken             String?                  @db.Text
+  refreshToken            String?                  @db.Text
+  tokenExpiresAt          DateTime?                @db.Timestamp
+  webhookUrl              String?                  @db.Text
+  webhookVerifyToken      String?                  @db.VarChar(255)
+  status                  String                   @default("disconnected") @db.VarChar(32)
   clientName              String?                  @db.VarChar(100)
   disconnectionReasonCode Int?                     @db.Int
   disconnectionObject     Json?                    @db.Json
@@ -107,6 +117,8 @@ model Instance {
   FlowiseSetting          FlowiseSetting?
   Pusher                  Pusher?
   N8n                     N8n[]
+  @@index([wabaId])
+  @@index([phoneNumberId])
 }
 
 model Session {
